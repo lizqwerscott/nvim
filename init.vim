@@ -70,15 +70,12 @@ Plug 'scrooloose/nerdtree'
 Plug 'dense-analysis/ale'
 Plug 'mbbill/undotree'
 
-Plug 'vim-scripts/ag.vim'
-
 Plug 'kovisoft/slimv', {'for': ['lisp', 'lsp']}
 """Plug 'kovisoft/paredit'
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 Plug 'mattn/emmet-vim'
 
 Plug 'junegunn/fzf.vim'
-Plug 'rking/ag.vim'
 
 Plug 'SirVer/ultisnips'
 
@@ -100,8 +97,6 @@ Plug 'mhinz/vim-signify'
 Plug 'octol/vim-cpp-enhanced-highlight'
 Plug 'udalov/kotlin-vim'
 
-Plug 'jceb/vim-orgmode'
-
 Plug 'tpope/vim-surround'
 Plug 'gcmt/wildfire.vim'
 
@@ -115,9 +110,6 @@ Plug 'dart-lang/dart-vim-plugin'
 call plug#end()
 
 set tags=./.tags;,.tags
-
-"Org
-let g:org_agenda_files=['~/org/index.org']
 
 "Ultisnips
 let g:UltiSnipsExpandTrigger="<c-e>"
@@ -139,6 +131,9 @@ let g:lisp_rainbow=1
 "let g:Vimim_cloud='baidu'
 "imap <C-Space> <C-_>
 "nmap <C-Space> <C-_>
+
+"FZF
+noremap <C-f> :FZF<CR>
 
 " TextEdit might fail if hidden is not set.
 set hidden
