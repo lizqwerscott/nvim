@@ -61,52 +61,69 @@ map <LEADER>nk <C-w>s <C-w>k
 
 call plug#begin('~/.vim/plugged')
 
-Plug 'junegunn/vim-peekaboo'
-Plug 'vim-airline/vim-airline'
+"color theme
 Plug 'connorholyday/vim-snazzy'
 Plug 'morhetz/gruvbox'
+
+"language about
+""lisp
+Plug 'kovisoft/slimv', {'for': ['lisp', 'lsp']}
+"""Plug 'kovisoft/paredit'
+"another language
+Plug 'neoclide/coc.nvim', {'branch': 'release'}
+"html
+Plug 'mattn/emmet-vim'
+"markdown
+Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install', 'for': ['markdown', 'vim-plug']}
+""generate table
+Plug 'dhruvasagar/vim-table-mode'
+"cmake
+Plug 'vhdirk/vim-cmake'
+"c++
+Plug 'octol/vim-cpp-enhanced-highlight'
+"kotlin
+Plug 'udalov/kotlin-vim'
+"glsl
+Plug 'tikhomirov/vim-glsl'
+"clojure
+Plug 'tpope/vim-fireplace', {'for': 'clojure'}
+"dart
+Plug 'dart-lang/dart-vim-plugin'
+
+"nerd
+Plug 'preservim/nerdcommenter'
+
+"search
+Plug 'junegunn/fzf.vim'
+
+"snippets
+Plug 'SirVer/ultisnips'
+Plug 'honza/vim-snippets'
+
+"input
+Plug 'yuweijun/vim-im'
+Plug 'tpope/vim-surround'
+Plug 'gcmt/wildfire.vim'
+Plug 'mg979/vim-visual-multi'
+
+Plug 'junegunn/vim-peekaboo'
+Plug 'vim-airline/vim-airline'
 "Plug 'dracula/vim', { 'as': 'dracula' }
 Plug 'scrooloose/nerdtree'
 Plug 'dense-analysis/ale'
 Plug 'mbbill/undotree'
 
-Plug 'kovisoft/slimv', {'for': ['lisp', 'lsp']}
-"""Plug 'kovisoft/paredit'
-Plug 'neoclide/coc.nvim', {'branch': 'release'}
-Plug 'mattn/emmet-vim'
-
-Plug 'junegunn/fzf.vim'
-
-Plug 'SirVer/ultisnips'
-
-Plug 'honza/vim-snippets'
-Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install', 'for': ['markdown', 'vim-plug']}
-Plug 'dhruvasagar/vim-table-mode'
-Plug 'yuweijun/vim-im'
-"Plug 'vim-scripts/VimIM'
 
 Plug 'wakatime/vim-wakatime'
 
 Plug 'sbdchd/neoformat'
 
-Plug 'vhdirk/vim-cmake'
 Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'mhinz/vim-signify'
 
-Plug 'octol/vim-cpp-enhanced-highlight'
-Plug 'udalov/kotlin-vim'
+Plug 'liuchengxu/vim-which-key'
 
-Plug 'tpope/vim-surround'
-Plug 'gcmt/wildfire.vim'
-
-Plug 'mg979/vim-visual-multi'
-
-Plug 'tpope/vim-fireplace', {'for': 'clojure'}
-
-Plug 'tikhomirov/vim-glsl'
-
-Plug 'dart-lang/dart-vim-plugin'
 call plug#end()
 
 set tags=./.tags;,.tags
@@ -132,6 +149,34 @@ let g:lisp_rainbow=1
 "imap <C-Space> <C-_>
 "nmap <C-Space> <C-_>
 
+"NERDTCommenter
+" Create default mappings
+let g:NERDCreateDefaultMappings = 1
+
+" Add spaces after comment delimiters by default
+let g:NERDSpaceDelims = 1
+
+" Use compact syntax for prettified multi-line comments
+let g:NERDCompactSexyComs = 1
+
+" Align line-wise comment delimiters flush left instead of following code indentation
+let g:NERDDefaultAlign = 'left'
+
+" Set a language to use its alternate delimiters by default
+let g:NERDAltDelims_java = 1
+
+" Add your own custom formats or override the defaults
+let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
+
+" Allow commenting and inverting empty lines (useful when commenting a region)
+let g:NERDCommentEmptyLines = 1
+
+" Enable trimming of trailing whitespace when uncommenting
+let g:NERDTrimTrailingWhitespace = 1
+
+" Enable NERDCommenterToggle to check all selected lines is commented or not 
+let g:NERDToggleCheckAllLines = 1
+
 "FZF
 noremap <C-f> :FZF<CR>
 
@@ -150,6 +195,8 @@ color gruvbox
 " Some servers have issues with backup files, see #649.
 "set nobackup
 "set nowritebackup
+
+"coc
 set updatetime=100
 set shortmess+=c
 
