@@ -65,6 +65,8 @@ call plug#begin('~/.vim/plugged')
 Plug 'connorholyday/vim-snazzy'
 Plug 'morhetz/gruvbox'
 
+Plug 'airblade/vim-rooter'
+
 "language about
 ""lisp
 Plug 'kovisoft/slimv', {'for': ['lisp', 'lsp']}
@@ -92,6 +94,9 @@ Plug 'dart-lang/dart-vim-plugin'
 
 "nerd
 Plug 'preservim/nerdcommenter'
+
+"language spector
+"Plug 'cpiger/NeoDebug'
 
 "search
 Plug 'junegunn/fzf.vim'
@@ -127,6 +132,12 @@ Plug 'liuchengxu/vim-which-key'
 call plug#end()
 
 set tags=./.tags;,.tags
+
+"cmake
+function CMakeccls() abort
+    let rootDir = FindRootDirectory()
+    execute "!~/.config/nvim/scripts/cclsCmake.sh " . rootDir
+endfunction
 
 "Ultisnips
 let g:UltiSnipsExpandTrigger="<c-e>"
@@ -215,6 +226,7 @@ let g:coc_global_extensions = [
   \ 'coc-translator',
   \ 'coc-snippets',
   \ 'coc-cmake',
+  \ 'coc-markdownlint',
   \ 'coc-highlight',
   \ 'coc-xml',
   \ 'coc-perl',
