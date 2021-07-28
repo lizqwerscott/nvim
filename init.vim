@@ -67,6 +67,8 @@ Plug 'morhetz/gruvbox'
 
 Plug 'airblade/vim-rooter'
 
+Plug 'kevinhwang91/rnvimr'
+
 "language about
 ""lisp
 Plug 'kovisoft/slimv', {'for': ['lisp', 'lsp']}
@@ -114,7 +116,7 @@ Plug 'mg979/vim-visual-multi'
 Plug 'junegunn/vim-peekaboo'
 Plug 'vim-airline/vim-airline'
 "Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'scrooloose/nerdtree'
+Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'dense-analysis/ale'
 Plug 'mbbill/undotree'
 
@@ -144,8 +146,29 @@ let g:UltiSnipsExpandTrigger="<c-e>"
 let g:UltiSnipsJumpForwardTrigger="<c-j>"
 let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 
-"NERDTREE
-map tt :NERDTreeToggle<CR>
+"rnimr
+nnoremap <silent> <leader>f :RnvimrToggle<CR>
+let g:rnvimr_hide_gitignore = 1
+
+"defx
+call defx#custom#option('_', { 'winwidth': 30, 'split': 'vertical', 'direction': 'topleft', 'show_ignored_files': 0, 'buffer_name': '', 'toggle': 1, 'resume': 1})
+autocmd FileType defx call s:defx_mappings()
+
+function! s:defx_mappings() abort
+  nnoremap <silent><buffer><expr> <CR>     <SID>defx_toggle_tree()                    " 打开或者关闭文件夹，文件
+  nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')     " 显示隐藏文件
+  nnoremap <silent><buffer><expr> <C-r>  defx#do_action('redraw')
+endfunction
+
+function! s:defx_toggle_tree() abort
+	" Open current file, or toggle directory expand/collapse
+	if defx#is_directory()
+		return defx#do_action('open_or_close_tree')
+	endif
+	return defx#do_action('multi', ['drop'])
+endfunction
+
+map tt :Defx -split=vertical<CR>
 
 "Lisp
 let g:slimv_swank_cmd = '! st ccl -l ~/.vim/plugged/slimv/slime/start-swank.lisp &'
@@ -159,34 +182,6 @@ let g:lisp_rainbow=1
 "let g:Vimim_cloud='baidu'
 "imap <C-Space> <C-_>
 "nmap <C-Space> <C-_>
-
-"NERDTCommenter
-" Create default mappings
-let g:NERDCreateDefaultMappings = 1
-
-" Add spaces after comment delimiters by default
-let g:NERDSpaceDelims = 1
-
-" Use compact syntax for prettified multi-line comments
-let g:NERDCompactSexyComs = 1
-
-" Align line-wise comment delimiters flush left instead of following code indentation
-let g:NERDDefaultAlign = 'left'
-
-" Set a language to use its alternate delimiters by default
-let g:NERDAltDelims_java = 1
-
-" Add your own custom formats or override the defaults
-let g:NERDCustomDelimiters = { 'c': { 'left': '/**','right': '*/' } }
-
-" Allow commenting and inverting empty lines (useful when commenting a region)
-let g:NERDCommentEmptyLines = 1
-
-" Enable trimming of trailing whitespace when uncommenting
-let g:NERDTrimTrailingWhitespace = 1
-
-" Enable NERDCommenterToggle to check all selected lines is commented or not 
-let g:NERDToggleCheckAllLines = 1
 
 "FZF
 noremap <C-f> :FZF<CR>
@@ -277,8 +272,8 @@ autocmd CursorHold * silent call CocActionAsync('highlight')
 
 nmap <leader>rn <Plug>(coc-rename)
 
-xmap <leader>f <Plug>(coc-format-selected)
-nmap <leader>f <Plug>(coc-format-selected)
+"xmap <leader>f <Plug>(coc-format-selected)
+"nmap <leader>f <Plug>(coc-format-selected)
 
 augroup mygroup
     autocmd!
