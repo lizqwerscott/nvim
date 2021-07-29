@@ -76,23 +76,23 @@ Plug 'kovisoft/slimv', {'for': ['lisp', 'lsp']}
 "another language
 Plug 'neoclide/coc.nvim', {'branch': 'release'}
 "html
-Plug 'mattn/emmet-vim'
+Plug 'mattn/emmet-vim', {'for': ['html', 'javascript', 'css']}
 "markdown
 Plug 'iamcco/markdown-preview.nvim', { 'do': 'cd app & yarn install', 'for': ['markdown', 'vim-plug']}
 ""generate table
 Plug 'dhruvasagar/vim-table-mode'
 "cmake
-Plug 'vhdirk/vim-cmake'
+Plug 'vhdirk/vim-cmake', {'for': ['cmake']}
 "c++
-Plug 'octol/vim-cpp-enhanced-highlight'
+Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['cpp']}
 "kotlin
-Plug 'udalov/kotlin-vim'
+Plug 'udalov/kotlin-vim', {'for': ['kotlin']}
 "glsl
-Plug 'tikhomirov/vim-glsl'
+Plug 'tikhomirov/vim-glsl', {'for': ['glsl']}
 "clojure
 Plug 'tpope/vim-fireplace', {'for': 'clojure'}
 "dart
-Plug 'dart-lang/dart-vim-plugin'
+Plug 'dart-lang/dart-vim-plugin', {'for': 'dart'}
 
 "nerd
 Plug 'preservim/nerdcommenter'
@@ -125,7 +125,6 @@ Plug 'wakatime/vim-wakatime'
 
 Plug 'sbdchd/neoformat'
 
-Plug 'ludovicchabant/vim-gutentags'
 Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'mhinz/vim-signify'
 
@@ -134,6 +133,10 @@ Plug 'liuchengxu/vim-which-key'
 call plug#end()
 
 set tags=./.tags;,.tags
+
+"which-key
+nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
+set timeoutlen=200
 
 "cmake
 function CMakeccls() abort
@@ -215,6 +218,7 @@ endif
 "Coc extensions
 let g:coc_global_extensions = [
   \ 'coc-json', 
+  \ 'coc-lists',
   \ 'coc-pairs',
   \ 'coc-spell-checker',
   \ 'coc-vimlsp',
@@ -317,6 +321,9 @@ nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
 nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
 " Search workspace symbols.
 nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
+" Search buffer
+nnoremap <silent><nowait> <space>b :<C-u>CocList buffers<cr>
+nnoremap <leader>l :CocList 
 " Do default action for next item.
 "nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
@@ -343,6 +350,9 @@ let g:coc_snippet_prev = '<c-k>'
 " Use <C-j> for both expand and jump (make expand higher priority.)
 imap <C-j> <Plug>(coc-snippets-expand-jump)
 
+"Neoformat
+nnoremap <leader>rf :Neoformat! c++ astyle<CR>
+
 "ale
 let g:ale_linters_explicit = 1
 let g:ale_completion_delay = 500
@@ -366,23 +376,6 @@ let g:DoxygenToolkit_blockHeader="----------------------------------------------
 let g:DoxygenToolkit_blockFooter="----------------------------------------------------------------------------"
 let g:DoxygenToolkit_authorName="lizqwer scott"
 let g:DoxygenToolkit_licenseTag="GPL"
-
-"gutentags
-" gutentags 搜索工程目录的标志，碰到这些文件/目录名就停止向上一级目录递归
-let g:gutentags_project_root = ['.root', '.svn', '.git', '.hg', '.project']
-" 所生成的数据文件的名称
-let g:gutentags_ctags_tagfile = '.tags'
-" 将自动生成的 tags 文件全部放入 ~/.cache/tags 目录中，避免污染工程目录
-let s:vim_tags = expand('~/.cache/tags')
-let g:gutentags_cache_dir = s:vim_tags
-" 配置 ctags 的参数
-let g:gutentags_ctags_extra_args = ['--fields=+niazS', '--extra=+q']
-let g:gutentags_ctags_extra_args += ['--c++-kinds=+px']
-let g:gutentags_ctags_extra_args += ['--c-kinds=+px']
-" 检测 ~/.cache/tags 不存在就新建
-if !isdirectory(s:vim_tags)
-   silent! call mkdir(s:vim_tags, 'p')
-endif
 
 "vim-cpp-highlight
 let g:cpp_class_scope_highlight = 1

@@ -32,7 +32,7 @@
             ],
             "initializationOptions": {
                 "cache": {
-                    "directory": ".ccls-cache"
+                    "directory": "/home/lizqwer/ccls-cache/"
                 },
                 "client": {
                     "snippetSupport": true
