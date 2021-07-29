@@ -323,7 +323,6 @@ nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
 nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
 " Search buffer
 nnoremap <silent><nowait> <space>b :<C-u>CocList buffers<cr>
-nnoremap <leader>l :CocList 
 " Do default action for next item.
 "nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
