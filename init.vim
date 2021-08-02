@@ -93,6 +93,8 @@ Plug 'tikhomirov/vim-glsl', {'for': ['glsl']}
 Plug 'tpope/vim-fireplace', {'for': 'clojure'}
 "dart
 Plug 'dart-lang/dart-vim-plugin', {'for': 'dart'}
+"Prolg
+Plug 'soli/prolog-vim', {'for': 'prolog'}
 
 "nerd
 Plug 'preservim/nerdcommenter'
