@@ -1,4 +1,5 @@
 let mapleader=" "
+noremap ; :
 syntax on
 set number
 set relativenumber
@@ -55,10 +56,11 @@ map <LEADER>k <C-w>k
 map <LEADER>j <C-w>j
 map <LEADER>h <C-w>h
 map <LEADER>l <C-w>l
-nnoremap <LEADER>wl <C-w>v <C-w>l
-nnoremap <LEADER>wh <C-w>v <C-w>h
-nnoremap <LEADER>wk <C-w>s <C-w>k
-nnoremap <LEADER>wj <C-w>s <C-w>j
+noremap <LEADER>wl <C-w>v <C-w>l
+noremap <LEADER>wh <C-w>v <C-w>h
+noremap <LEADER>wk <C-w>s <C-w>k
+noremap <LEADER>wj <C-w>s <C-w>j
+noremap <leader>tn :tabnew<CR>
 "FZ
 
 call plug#begin('~/.vim/plugged')
@@ -119,8 +121,11 @@ Plug 'mg979/vim-visual-multi'
 
 Plug 'junegunn/vim-peekaboo'
 Plug 'vim-airline/vim-airline'
+Plug 'vim-airline/vim-airline-themes'
+Plug 'mg979/vim-xtabline'
+Plug 'liuchengxu/vista.vim'
+Plug 'lambdalisue/suda.vim'
 "Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
 Plug 'dense-analysis/ale'
 Plug 'mbbill/undotree'
 
@@ -134,13 +139,17 @@ Plug 'mhinz/vim-signify'
 
 Plug 'liuchengxu/vim-which-key'
 
+Plug 'skywind3000/asynctasks.vim'
+Plug 'skywind3000/asyncrun.vim'
+
 call plug#end()
 
-set tags=./.tags;,.tags
+"asynctasks
+let g:asyncrun_open = 6
 
 "which-key
 nnoremap <silent> <leader> :WhichKey '<Space>'<CR>
-set timeoutlen=200
+set timeoutlen=300
 
 "cmake
 function CMakeccls() abort
@@ -156,26 +165,6 @@ let g:UltiSnipsJumpBackwardTrigger="<c-k>"
 "rnimr
 nnoremap <silent> <leader>f :RnvimrToggle<CR>
 let g:rnvimr_hide_gitignore = 1
-
-"defx
-call defx#custom#option('_', { 'winwidth': 30, 'split': 'vertical', 'direction': 'topleft', 'show_ignored_files': 0, 'buffer_name': '', 'toggle': 1, 'resume': 1})
-autocmd FileType defx call s:defx_mappings()
-
-function! s:defx_mappings() abort
-  nnoremap <silent><buffer><expr> <CR>     <SID>defx_toggle_tree()                    " 打开或者关闭文件夹，文件
-  nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')     " 显示隐藏文件
-  nnoremap <silent><buffer><expr> <C-r>  defx#do_action('redraw')
-endfunction
-
-function! s:defx_toggle_tree() abort
-	" Open current file, or toggle directory expand/collapse
-	if defx#is_directory()
-		return defx#do_action('open_or_close_tree')
-	endif
-	return defx#do_action('multi', ['drop'])
-endfunction
-
-map tt :Defx -split=vertical<CR>
 
 "Lisp
 let g:slimv_swank_cmd = '! st ccl -l ~/.vim/plugged/slimv/slime/start-swank.lisp &'
@@ -212,16 +201,14 @@ color gruvbox
 "coc
 set updatetime=100
 set shortmess+=c
-
-if has("patch-8.1.1564")
-    set signcolumn=number
-else
-    set signcolumn=yes
-endif
+set signcolumn=yes
 
 "Coc extensions
 let g:coc_global_extensions = [
   \ 'coc-json', 
+  \ 'coc-explorer',
+  \ 'coc-tasks',
+  \ 'coc-word',
   \ 'coc-lists',
   \ 'coc-pairs',
   \ 'coc-spell-checker',
@@ -249,25 +236,12 @@ inoremap <silent><expr> <Tab>
       \ <SID>check_back_space() ? "\<Tab>" :
       \ coc#refresh()
 inoremap <expr> <S-Tab> pumvisible() ? "\<C-p>" : "\<S-Tab>"
-
+inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
 function! s:check_back_space() abort
   let col = col('.') - 1
   return !col || getline('.')[col - 1]	=~ '\s'
 endfunction
-
-"Space place use enter complete
 inoremap <silent><expr> <c-o> coc#refresh()
-inoremap <expr> <cr> complete_info()["selected"] != "-1" ? "\<C-y>" : "\<C-g>u\<CR>"
-
-nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
-nmap <silent> <LEADER>= <Plug>(coc-diagnostic-next)
-" GoTo code navigation.
-nmap <silent> gd <Plug>(coc-definition)
-nmap <silent> gy <Plug>(coc-type-definition)
-nmap <silent> gi <Plug>(coc-implementation)
-nmap <silent> gr <Plug>(coc-references)
-
-nnoremap <silent> <LEADER>K :call <SID>show_documentation()<CR>
 function! s:show_documentation()
     if (index(['vim','help'], &filetype) >= 0)
       execute 'h '.expand('<cword>')
@@ -275,27 +249,46 @@ function! s:show_documentation()
       call CocAction('doHover')
     endif
 endfunction
+nnoremap <silent> <LEADER>K :call <SID>show_documentation()<CR>
+
+nmap <silent> <LEADER>- <Plug>(coc-diagnostic-prev)
+nmap <silent> <LEADER>= <Plug>(coc-diagnostic-next)
+" GoTo code navigation.
+nmap <silent> gd <Plug>(coc-definition)
+nmap <silent> gD :tab sp<CR><Plug>(coc-definition)
+nmap <silent> gy <Plug>(coc-type-definition)
+nmap <silent> gi <Plug>(coc-implementation)
+nmap <silent> gr <Plug>(coc-references)
+
+nmap tt :CocCommand explorer<CR>
+
 
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
 nmap <leader>rn <Plug>(coc-rename)
+nmap <leader>rt <Plug>(coc-refactor)
 
-"xmap <leader>f <Plug>(coc-format-selected)
-"nmap <leader>f <Plug>(coc-format-selected)
+nnoremap <silent><nowait> <space>d  :<C-u>CocList diagnostics<cr>
+" Manage extensions.
+nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
+" Show commands.
+nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
+" Find symbol of current document.
+nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
+" Search buffer
+nnoremap <silent><nowait> <space>b :<C-u>CocList buffers<cr>
+" Search workspace symbols.
+nnoremap <silent><nowait> <space>ss  :<C-u>CocList -I symbols<cr>
+" Search words
+nnoremap <space>sw :CocSearch 
+nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
 
-augroup mygroup
-    autocmd!
-    " Setup formatexpr specified filetype(s).
-    autocmd FileType typescript,json setl
-    " formatexpr=CocAction('formatSelected')
-    " Update signature help on jump placeholder.
-    autocmd User CocJumpPlaceholder call CocActionAsync('showSignatureHelp')
-augroup end
+nmap ts <Plug>(coc-translator-p)
 
-" Remap keys for applying codeAction to the current buffer.
-nmap <leader>ac  <Plug>(coc-codeaction)
-" Apply AutoFix to problem on the current line.
-nmap <leader>qf  <Plug>(coc-fix-current)
+nnoremap <leader>ts :CocList tasks<CR>
+
+xmap <leader>a <Plug>(coc-format-selected)
+nmap <leader>aw <Plug>(coc-format-selected)w
 
 xmap if <Plug>(coc-funcobj-i)
 omap if <Plug>(coc-funcobj-i)
@@ -316,26 +309,13 @@ command! -nargs=0 OR   :call     CocAction('runCommand', 'editor.action.organize
 
 " Mappings for CoCList
 " Show all diagnostics.
-nnoremap <silent><nowait> <space>a  :<C-u>CocList diagnostics<cr>
-" Manage extensions.
-nnoremap <silent><nowait> <space>e  :<C-u>CocList extensions<cr>
-" Show commands.
-nnoremap <silent><nowait> <space>c  :<C-u>CocList commands<cr>
-" Find symbol of current document.
-nnoremap <silent><nowait> <space>o  :<C-u>CocList outline<cr>
-" Search workspace symbols.
-nnoremap <silent><nowait> <space>s  :<C-u>CocList -I symbols<cr>
-" Search buffer
-nnoremap <silent><nowait> <space>b :<C-u>CocList buffers<cr>
+
+
 " Do default action for next item.
 "nnoremap <silent><nowait> <space>j  :<C-u>CocNext<CR>
 " Do default action for previous item.
 "nnoremap <silent><nowait> <space>k  :<C-u>CocPrev<CR>
 " Resume latest coc list.
-nnoremap <silent><nowait> <space>p  :<C-u>CocListResume<CR>
-
-nnoremap <leader>t :CocCommand translator.popup<CR>
-nnoremap <leader>te :CocCommand translator.replace<CR>
 
 "coc snippets
 " Use <C-l> for trigger snippet expand.
@@ -371,6 +351,10 @@ let g:ale_cpp_gcc_options = '-Wall -O2 -std=c++14'
 let g:ale_c_cppcheck_options = ''
 let g:ale_cpp_cppcheck_options = ''
 
+"airline
+let g:airline#extensions#coc#enabled = 1
+let g:airline#extensions#tabline#enabled = 1
+
 "doxygen
 let g:DoxygenToolkit_briefTag_pre="@Synopsis  "
 let g:DoxygenToolkit_paramTag_pre="@Param "
@@ -384,4 +368,33 @@ let g:DoxygenToolkit_licenseTag="GPL"
 let g:cpp_class_scope_highlight = 1
 let g:cpp_member_variable_highlight = 1
 let g:cpp_class_decl_highlight = 1
+
+"suda
+let g:suda_smart_edit = 1
+
+"vista
+noremap <leader>v :Vista!!<CR>
+noremap <c-t> :silent! Vista finder coc<CR>
+let g:vista_icon_indent = ["╰─▸ ", "├─▸ "]
+let g:vista_default_executive = 'coc'
+let g:vista_fzf_preview = ['right:50%']
+let g:vista#renderer#enable_icon = 1
+let g:vista#renderer#icons = {
+\   "function": "\uf794",
+\   "variable": "\uf71b",
+\  }
+function! NearestMethodOrFunction() abort
+  return get(b:, 'vista_nearest_method_or_function', '')
+endfunction
+set statusline+=%{NearestMethodOrFunction()}
+autocmd VimEnter * call vista#RunForNearestMethodOrFunction()
+let g:scrollstatus_size = 15
+
+"xtabline
+let g:xtabline_settings = {}
+let g:xtabline_settings.enable_mappings = 0
+let g:xtabline_settings.tabline_modes = ['tabs', 'buffers']
+let g:xtabline_settings.enable_persistance = 0
+let g:xtabline_settings.last_open_first = 1
+noremap <leader>xs :XTabMode<CR>
 
