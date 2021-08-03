@@ -49,14 +49,16 @@ inoremap <C-l> <Esc>
 
 nmap <C-s> :w<CR>
 "nnoremap S :w<CR>
-map Q :wq<CR>
+map Q :x<CR>
 map R :source ~/.config/nvim/init.vim<CR>
 map <LEADER>k <C-w>k
 map <LEADER>j <C-w>j
 map <LEADER>h <C-w>h
 map <LEADER>l <C-w>l
-map <LEADER>nl <C-w>v <C-w>l
-map <LEADER>nk <C-w>s <C-w>k
+nnoremap <LEADER>wl <C-w>v <C-w>l
+nnoremap <LEADER>wh <C-w>v <C-w>h
+nnoremap <LEADER>wk <C-w>s <C-w>k
+nnoremap <LEADER>wj <C-w>s <C-w>j
 "FZ
 
 call plug#begin('~/.vim/plugged')
