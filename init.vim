@@ -68,6 +68,7 @@ call plug#begin('~/.vim/plugged')
 "color theme
 Plug 'connorholyday/vim-snazzy'
 Plug 'morhetz/gruvbox'
+Plug 'ajmwagar/vim-deus'
 
 Plug 'airblade/vim-rooter'
 
@@ -187,7 +188,8 @@ set hidden
 
 "color dracula
 "color snazzy
-color gruvbox
+"color gruvbox
+colorscheme deus
 "autocmd vimenter * colorscheme gruvbox
 "set termguicolors
 "set background=dark
