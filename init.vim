@@ -223,7 +223,6 @@ let g:coc_global_extensions = [
   \ 'coc-xml',
   \ 'coc-perl',
   \ 'coc-html',
-  \ 'coc-python',
   \ 'coc-java',
   \ 'coc-pyright',
   \ 'coc-rls',
