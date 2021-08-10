@@ -89,7 +89,7 @@ Plug 'dhruvasagar/vim-table-mode'
 "cmake
 Plug 'vhdirk/vim-cmake', {'for': ['cmake']}
 "c++
-Plug 'octol/vim-cpp-enhanced-highlight', {'for': ['cpp']}
+Plug 'bfrg/vim-cpp-modern', {'for': ['cpp', 'c']}
 "kotlin
 Plug 'udalov/kotlin-vim', {'for': ['kotlin']}
 "glsl
@@ -365,10 +365,11 @@ let g:DoxygenToolkit_blockFooter="----------------------------------------------
 let g:DoxygenToolkit_authorName="lizqwer scott"
 let g:DoxygenToolkit_licenseTag="GPL"
 
-"vim-cpp-highlight
-let g:cpp_class_scope_highlight = 1
-let g:cpp_member_variable_highlight = 1
-let g:cpp_class_decl_highlight = 1
+" vim-cpp-modern
+" Enable highlighting of C++11 attributes
+let g:cpp_attributes_highlight = 1
+" Highlight struct/class member variables (affects both C and C++ files)
+let g:cpp_member_highlight = 1
 
 "suda
 let g:suda_smart_edit = 1
