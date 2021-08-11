@@ -137,13 +137,47 @@ Plug 'sbdchd/neoformat'
 
 Plug 'vim-scripts/DoxygenToolkit.vim'
 Plug 'mhinz/vim-signify'
+Plug 'mhinz/vim-startify'
 
 Plug 'liuchengxu/vim-which-key'
 
 Plug 'skywind3000/asynctasks.vim'
 Plug 'skywind3000/asyncrun.vim'
 
+Plug 'Shougo/defx.nvim', { 'do': ':UpdateRemotePlugins' }
+Plug 'kristijanhusak/defx-icons'
+Plug 'ryanoasis/vim-devicons'
+
 call plug#end()
+
+"defx
+nmap <silent>tt :Defx -columns=icons:indent:filename:type<CR>
+
+call defx#custom#option('_', {
+      \ 'winwidth': 30,
+      \ 'split': 'vertical',
+      \ 'direction': 'topleft',
+      \ 'show_ignored_files': 0,
+      \ 'buffer_name': '',
+      \ 'toggle': 1,
+      \ 'resume': 1
+      \ })
+
+autocmd FileType defx call s:defx_mappings()
+
+function! s:defx_mappings() abort
+  nnoremap <silent><buffer><expr> l     <SID>defx_toggle_tree()                    " 打开或者关闭文件夹，文件
+  nnoremap <silent><buffer><expr> .     defx#do_action('toggle_ignored_files')     " 显示隐藏文件
+  nnoremap <silent><buffer><expr> <C-r>  defx#do_action('redraw')
+endfunction
+
+function! s:defx_toggle_tree() abort
+    " Open current file, or toggle directory expand/collapse
+    if defx#is_directory()
+        return defx#do_action('open_or_close_tree')
+    endif
+    return defx#do_action('multi', ['drop'])
+endfunction
 
 "asynctasks
 let g:asyncrun_open = 6
@@ -207,8 +241,7 @@ set signcolumn=yes
 
 "Coc extensions
 let g:coc_global_extensions = [
-  \ 'coc-json', 
-  \ 'coc-explorer',
+  \ 'coc-json',
   \ 'coc-tasks',
   \ 'coc-word',
   \ 'coc-lists',
@@ -260,9 +293,6 @@ nmap <silent> gD :tab sp<CR><Plug>(coc-definition)
 nmap <silent> gy <Plug>(coc-type-definition)
 nmap <silent> gi <Plug>(coc-implementation)
 nmap <silent> gr <Plug>(coc-references)
-
-nmap tt :CocCommand explorer<CR>
-
 
 autocmd CursorHold * silent call CocActionAsync('highlight')
 
@@ -355,6 +385,40 @@ let g:ale_cpp_cppcheck_options = ''
 "airline
 let g:airline#extensions#coc#enabled = 1
 let g:airline#extensions#tabline#enabled = 1
+" adding to vim-airline's tabline
+let g:webdevicons_enable_airline_tabline = 1
+" adding to vim-airline's statusline
+let g:webdevicons_enable_airline_statusline = 1
+
+"startify
+let g:webdevicons_enable_startify = 1
+" returns all modified files of the current git repo
+" `2>/dev/null` makes the command fail quietly, so that when we are not
+" in a git repo, the list will be empty
+function! s:gitModified()
+    let files = systemlist('git ls-files -m 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+" same as above, but show untracked files, honouring .gitignore
+function! s:gitUntracked()
+    let files = systemlist('git ls-files -o --exclude-standard 2>/dev/null')
+    return map(files, "{'line': v:val, 'path': v:val}")
+endfunction
+
+let g:startify_lists = [
+        \ { 'type': 'files',     'header': ['   MRU']            },
+        \ { 'type': 'dir',       'header': ['   MRU '. getcwd()] },
+        \ { 'type': 'sessions',  'header': ['   Sessions']       },
+        \ { 'type': 'bookmarks', 'header': ['   Bookmarks']      },
+        \ { 'type': function('s:gitModified'),  'header': ['   git modified']},
+        \ { 'type': function('s:gitUntracked'), 'header': ['   git untracked']},
+        \ { 'type': 'commands',  'header': ['   Commands']       },
+        \ ]
+
+ let g:startify_custom_header =
+       \ startify#pad(split(system('figlet -w 100 FlyDog'), "\n"))
+
 
 "doxygen
 let g:DoxygenToolkit_briefTag_pre="@Synopsis  "
