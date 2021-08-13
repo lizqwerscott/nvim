@@ -117,6 +117,7 @@ Plug 'honza/vim-snippets'
 "input
 Plug 'yuweijun/vim-im'
 Plug 'tpope/vim-surround'
+Plug 'jiangmiao/auto-pairs'
 Plug 'gcmt/wildfire.vim'
 Plug 'mg979/vim-visual-multi'
 
@@ -245,8 +246,6 @@ let g:coc_global_extensions = [
   \ 'coc-tasks',
   \ 'coc-word',
   \ 'coc-lists',
-  \ 'coc-pairs',
-  \ 'coc-spell-checker',
   \ 'coc-vimlsp',
   \ 'coc-translator',
   \ 'coc-snippets',
