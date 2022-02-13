@@ -24,6 +24,10 @@ set softtabstop=4
 autocmd FileType lisp setlocal tabstop=2
 autocmd FileType lisp setlocal shiftwidth=2
 autocmd FileType lisp setlocal softtabstop=2
+"Javascript
+autocmd FileType javascript setlocal tabstop=2
+autocmd FileType javascript setlocal shiftwidth=2
+autocmd FileType javascript setlocal softtabstop=2
 "dart
 autocmd FileType dart setlocal tabstop=2
 autocmd FileType dart setlocal shiftwidth=2
@@ -56,10 +60,12 @@ map <LEADER>k <C-w>k
 map <LEADER>j <C-w>j
 map <LEADER>h <C-w>h
 map <LEADER>l <C-w>l
-noremap <LEADER>wl <C-w>v <C-w>l
-noremap <LEADER>wh <C-w>v <C-w>h
-noremap <LEADER>wk <C-w>s <C-w>k
-noremap <LEADER>wj <C-w>s <C-w>j
+noremap <LEADER>3 <C-w>v
+"noremap <LEADER>wl <C-w>v <C-w>l
+"noremap <LEADER>wh <C-w>v <C-w>h
+noremap <LEADER>2 <C-w>s
+"noremap <LEADER>wk <C-w>s <C-w>k
+"noremap <LEADER>wj <C-w>s <C-w>j
 noremap <leader>tn :tabnew<CR>
 "FZ
 
@@ -255,6 +261,7 @@ let g:coc_global_extensions = [
   \ 'coc-xml',
   \ 'coc-perl',
   \ 'coc-html',
+  \ 'coc-css',
   \ 'coc-java',
   \ 'coc-pyright',
   \ 'coc-rls',
